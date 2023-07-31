@@ -23,8 +23,7 @@ node_types:
       # Ceph volume
       - capacity: 20GiB
     physical_networks:
-      - provision-net
-      - cloud-net
+      - physnet1
     console_log_enabled: true
   compute:
     memory_mb: 8192

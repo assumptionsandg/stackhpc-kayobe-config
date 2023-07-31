@@ -13,8 +13,16 @@ PULP_HOST="10.205.3.187 pulp-server pulp-server.internal.sms-cloud"
 
 cd
 
+mkdir venvs && cd venvs
+python3 -m venv kayobe
+source kayobe/bin/activate
+pip install -U pip
+pip install ../src/kayobe
+pip install openstacksdk
+pip install python-openstackclient
+
 set +u
-source venvs/kayobe/bin/activate
+source ~/venvs/kayobe/bin/activate
 set -u
 
 # Activate environment
