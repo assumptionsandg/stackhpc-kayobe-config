@@ -90,3 +90,4 @@ prometheus_ceph_mgr_exporter_endpoints:
 
 #############################################################################
 
+prometheus_fluentd_exporter_port: 24224

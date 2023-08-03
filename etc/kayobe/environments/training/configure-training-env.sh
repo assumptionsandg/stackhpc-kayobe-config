@@ -13,13 +13,13 @@ PULP_HOST="10.205.3.187 pulp-server pulp-server.internal.sms-cloud"
 
 cd
 
-mkdir venvs && cd venvs
-python3 -m venv kayobe
-source kayobe/bin/activate
-pip install -U pip
-pip install ../src/kayobe
-pip install openstacksdk
-pip install python-openstackclient
+# mkdir venvs && cd venvs
+# python3 -m venv kayobe
+# source kayobe/bin/activate
+# pip install -U pip
+# pip install ../src/kayobe
+# pip install openstacksdk
+# pip install python-openstackclient
 
 set +u
 source ~/venvs/kayobe/bin/activate
@@ -57,7 +57,7 @@ $KAYOBE_CONFIG_PATH/environments/$KAYOBE_ENVIRONMENT/configure-local-networking.
 #######################################################################
 
 # Add sms lab test pulp to /etc/hosts of seed vm's pulp container
-SEED_IP=192.168.33.5
+SEED_IP=192.168.43.5
 REMOTE_COMMAND="docker exec pulp sh -c 'echo $PULP_HOST | tee -a /etc/hosts'"
 ssh stack@$SEED_IP $REMOTE_COMMAND
 

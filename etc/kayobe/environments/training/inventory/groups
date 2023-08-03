@@ -1,0 +1,16 @@
+[storage]
+
+[mons:children]
+storage
+
+[mgrs:children]
+storage
+
+[osds:children]
+storage
+
+[rgws:children]
+storage
+
+[monitoring:children]
+controllers

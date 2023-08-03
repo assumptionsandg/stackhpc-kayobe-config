@@ -16,3 +16,4 @@ controller2 ipmi_address=192.168.33.4 bmc_type=
 storage0 ipmi_address=192.168.33.4 bmc_type=
 storage1 ipmi_address=192.168.33.4 bmc_type=
 storage2 ipmi_address=192.168.33.4 bmc_type=
+

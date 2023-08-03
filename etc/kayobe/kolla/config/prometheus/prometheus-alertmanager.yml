@@ -1,0 +1,23 @@
+---
+global:
+  resolve_timeout: 5m
+  smtp_require_tls: true
+  slack_api_url: "https://hooks.slack.com/services/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"
+
+route:
+  receiver: 'slack-notifications'
+  group_by: [alertname]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+
+receivers:
+  - name: 'slack-notifications'
+    slack_configs: {{ '{% raw %}' }}{% raw %}
+    - channel: '#random'
+      title: 'training: {{ .GroupLabels.alertname }} alert'
+      text: '{{ range .Alerts }}{{ .Annotations.description }}\n{{ end }}'
+      send_resolved: true
+{% endraw %}{{ '{% endraw %}' }}
+
+templates: []

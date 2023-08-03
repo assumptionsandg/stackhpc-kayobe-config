@@ -8,31 +8,31 @@
 
 # Name of the network used for admin access to the overcloud
 #admin_oc_net_name:
-admin_oc_net_name: aio
+admin_oc_net_name: admin_net
 
 # Name of the network used by the seed to manage the bare metal overcloud
 # hosts via their out-of-band management controllers.
 #oob_oc_net_name:
-oob_oc_net_name: aio
+oob_oc_net_name: mgmt_oc_net
 
 # Name of the network used by the seed to provision the bare metal overcloud
 # hosts.
 #provision_oc_net_name:
-provision_oc_net_name: aio
+provision_oc_net_name: provision_oc_net
 
 # Name of the network used by the overcloud hosts to manage the bare metal
 # compute hosts via their out-of-band management controllers.
 #oob_wl_net_name:
-oob_wl_net_name: aio
+oob_wl_net_name: mgmt_wl_net
 
 # Name of the network used by the overcloud hosts to provision the bare metal
 # workload hosts.
 #provision_wl_net_name:
-provision_wl_net_name: aio
+provision_wl_net_name: provision_wl_net
 
 # Name of the network used to expose the internal OpenStack API endpoints.
 #internal_net_name:
-internal_net_name: aio
+internal_net_name: internal_net
 
 # List of names of networks used to provide external network access via
 # Neutron.
@@ -41,55 +41,109 @@ internal_net_name: aio
 # containing one item, external_net_name.
 #external_net_names:
 external_net_names:
-  - aio
+  - external_net
 
 # Name of the network used to expose the public OpenStack API endpoints.
 #public_net_name:
-public_net_name: aio
+public_net_name: public_net
 
 # Name of the network used by Neutron to carry tenant overlay network traffic.
 #tunnel_net_name:
-tunnel_net_name: aio
+tunnel_net_name: tunnel_net
 
 # Name of the network used to carry storage data traffic.
 #storage_net_name:
-storage_net_name: aio
+storage_net_name: str_net
 
 # Name of the network used to carry storage management traffic.
 #storage_mgmt_net_name:
-storage_mgmt_net_name: aio
+storage_mgmt_net_name: str_net
 
 # Name of the network used to carry swift storage data traffic.
 #swift_storage_net_name:
-swift_storage_net_name: aio
+#swift_storage_net_name: str_swift_net
 
 # Name of the network used to carry swift storage replication traffic.
 #swift_storage_replication_net_name:
-swift_storage_replication_net_name: aio
+#swift_storage_replication_net_name: str_swift_
 
 # Name of the network used to perform hardware introspection on the bare metal
 # workload hosts.
 #inspection_net_name:
-inspection_net_name: aio
+inspection_net_name: provision_wl_net
 
 # Name of the network used to perform cleaning on the bare metal workload
 # hosts
 #cleaning_net_name:
-cleaning_net_name: aio
+cleaning_net_name: provision_wl_net
 
 ###############################################################################
 # Network definitions.
 
-# All-in-one network.
-aio_cidr: 192.168.33.0/24
-aio_allocation_pool_start: 192.168.33.3
-aio_allocation_pool_end: 192.168.33.30
-aio_neutron_allocation_pool_start: 192.168.33.31
-aio_neutron_allocation_pool_end: 192.168.33.127
-aio_inspection_allocation_pool_start: 192.168.33.128
-aio_inspection_allocation_pool_end: 192.168.33.254
-aio_vip_address: 192.168.33.2
-aio_mtu: 1400
+# Admin network 
+admin_net_cidr: 192.168.43.0/24
+admin_net_mtu: 1400
+admin_physical_network: provision
+
+# Overcloud out-of-band network
+oob_oc_net_cidr: 192.168.44.0/24
+oob_oc_net_mtu: 1400
+oob_oc_net_physical_network: management
+
+# Workload out-of-band network
+oob_wl_net_cidr: 192.168.45.0/24
+oob_wl_net_mtu: 1400
+oob_wl_net_physical_network: management
+
+# Overcloud provisioning network
+provision_oc_net_cidr: 192.168.46.0/24
+provision_oc_net_allocation_pool_start: 192.168.46.3
+provision_oc_net_allocation_pool_end: 192.168.46.30
+provision_oc_net_inspection_allocation_pool_start: 192.168.46.128
+provision_oc_net_inspection_allocation_pool_end: 192.168.46.254
+provision_oc_net_mtu: 1400
+provision_oc_net_physical_network: provision
+
+provision_wl_net_cidr: 192.168.47.0/24
+provision_wl_net_allocation_pool_start: 192.168.47.3
+provision_wl_net_allocation_pool_end: 192.168.47.30
+provision_wl_net_neutron_allocation_pool_start: 192.168.47.31
+provision_wl_net_neutron_allocation_pool_end: 192.168.47.127
+provision_wl_net_inspection_allocation_pool_start: 192.168.47.128
+provision_wl_net_inspection_allocation_pool_end: 192.168.47.254
+provision_wl_net_mtu: 1400
+provision_wl_net_physical_network: cloud
+
+internal_net_cidr: 192.168.48.0/24
+internal_net_allocation_pool_start: 192.168.48.3
+internal_net_allocation_pool_end: 192.168.48.30
+internal_net_vip_address: 192.168.48.2
+internal_net_vlan: 101
+internal_net_mtu: 1400
+internal_net_physical_network: cloud
+
+external_net_cidr: 192.168.49.0/24
+external_net_vlan: 102
+external_net_mtu: 1400
+external_net_physical_network: cloud
+
+public_net_cidr: 192.168.50.0/24
+public_net_allocation_pool_start: 192.168.50.3
+public_net_allocation_pool_end: 192.168.50.30
+public_net_vip_address: 192.168.50.2
+public_net_vlan: 103
+public_net_mtu: 1400
+public_net_physical_network: cloud
+
+str_net_cidr: 192.168.51.0/24
+str_net_vlan: 104
+str_net_mtu: 1400
+str_net_physical_network: cloud
+
+tunnel_net_cidr: 192.168.52.0/24
+tunnel_net_vlan: 105
+tunnel_net_mtu: 1400
+tunnel_net_physical_network: cloud
 ###############################################################################
 # Network virtual patch link configuration.
 
