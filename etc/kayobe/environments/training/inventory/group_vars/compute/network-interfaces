@@ -4,14 +4,15 @@
 
 provision_oc_net_interface: "{{ 'ens2' if os_distribution == 'ubuntu' else 'eth0' }}"
 # Route via the seed-hypervisor to the outside world.
-provision_oc_net_gateway: 192.168.43.4
+provision_oc_net_gateway: 192.168.46.4
 
-internal_net_interface: "{{ 'ens4' if os_distribution == 'ubuntu' else 'eth2' }}.{{ internal_vlan }}"
+internal_net_interface: "{{ 'ens4' if os_distribution == 'ubuntu' else 'eth1' }}.{{ internal_net_vlan }}"
 
-str_net_interface: "{{ 'ens4' if os_distribution == 'ubuntu' else 'eth2' }}.{{ storage_vlan }}"
+str_net_interface: "{{ 'ens4' if os_distribution == 'ubuntu' else 'eth1' }}.{{ str_net_vlan }}"
 
-tunnel_net_interface: "{{ 'ens4' if os_distribution == 'ubuntu' else 'eth2' }}.{{ tunnel_vlan }}"
+tunnel_net_interface: "{{ 'ens4' if os_distribution == 'ubuntu' else 'eth1' }}.{{ tunnel_net_vlan }}"
 
+external_net_interface: "{{ 'ens3' if os_distribution == 'ubuntu' else 'eth1' }}.{{ external_net_vlan }}"
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.
 workaround_ansible_issue_8743: yes

@@ -11,8 +11,8 @@ provision_wl_net_interface: brcloud
 provision_wl_net_bridge_ports:
   - dummy-cloud
 
-internal_net_interface: "{{ provision_wl_interface }}.{{ internal_vlan }}"
+internal_net_interface: "{{ provision_wl_net_interface }}.{{ internal_net_vlan }}"
 
-public_net_interface: "{{ provision_wl_interface }}.{{ public_vlan }}"
+public_net_interface: "{{ provision_wl_net_interface }}.{{ public_net_vlan }}"
 
-external_net_interface: "{{ provision_wl_interface }}.{{ external_vlan }}"
+external_net_interface: "{{ provision_wl_net_interface }}.{{ external_net_vlan }}"

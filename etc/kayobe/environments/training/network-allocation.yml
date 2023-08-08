@@ -1,4 +1,26 @@
----
+external_net_ips:
+  compute0: 192.168.49.5
+  compute1: 192.168.49.6
+  controller0: 192.168.49.2
+  controller1: 192.168.49.3
+  controller2: 192.168.49.4
+  seed-hypervisor: 192.168.49.1
+internal_net_ips:
+  compute0: 192.168.48.10
+  compute1: 192.168.48.11
+  controller0: 192.168.48.4
+  controller1: 192.168.48.5
+  controller2: 192.168.48.6
+  seed-hypervisor: 192.168.48.3
+  storage0: 192.168.48.7
+  storage1: 192.168.48.8
+  storage2: 192.168.48.9
+mgmt_oc_net_ips:
+  controller0: 192.168.44.3
+  controller1: 192.168.44.4
+  controller2: 192.168.44.5
+  seed: 192.168.44.2
+  seed-hypervisor: 192.168.44.1
 provision_oc_net_ips:
   compute0: 192.168.46.6
   compute1: 192.168.46.7
@@ -10,4 +32,28 @@ provision_oc_net_ips:
   storage0: 192.168.46.11
   storage1: 192.168.46.12
   storage2: 192.168.46.13
-
+provision_wl_net_ips:
+  controller0: 192.168.47.4
+  controller1: 192.168.47.5
+  controller2: 192.168.47.6
+  seed-hypervisor: 192.168.47.3
+public_net_ips:
+  controller0: 192.168.50.4
+  controller1: 192.168.50.5
+  controller2: 192.168.50.6
+  seed-hypervisor: 192.168.50.3
+str_net_ips:
+  compute0: 192.168.51.7
+  compute1: 192.168.51.8
+  controller0: 192.168.51.1
+  controller1: 192.168.51.2
+  controller2: 192.168.51.3
+  storage0: 192.168.51.4
+  storage1: 192.168.51.5
+  storage2: 192.168.51.6
+tunnel_net_ips:
+  compute0: 192.168.52.4
+  compute1: 192.168.52.5
+  controller0: 192.168.52.1
+  controller1: 192.168.52.2
+  controller2: 192.168.52.3

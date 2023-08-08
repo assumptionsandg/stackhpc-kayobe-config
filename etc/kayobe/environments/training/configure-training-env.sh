@@ -57,7 +57,7 @@ $KAYOBE_CONFIG_PATH/environments/$KAYOBE_ENVIRONMENT/configure-local-networking.
 #######################################################################
 
 # Add sms lab test pulp to /etc/hosts of seed vm's pulp container
-SEED_IP=192.168.43.5
+SEED_IP=192.168.46.5
 REMOTE_COMMAND="docker exec pulp sh -c 'echo $PULP_HOST | tee -a /etc/hosts'"
 ssh stack@$SEED_IP $REMOTE_COMMAND
 

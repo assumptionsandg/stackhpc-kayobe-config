@@ -8,9 +8,9 @@ set -o pipefail
 # IP addresses on the all-in-one Kayobe cloud network.
 # These IP addresses map to those statically configured in
 # etc/kayobe/network-allocation.yml and etc/kayobe/networks.yml.
-controller_vip=192.168.33.2
-seed_hv_ip=192.168.33.4
-seed_vm_ip=192.168.33.5
+controller_vip=192.168.50.2
+seed_hv_ip=192.168.46.4
+seed_vm_ip=192.168.46.5
 
 iface=$(ip route | awk '$1 == "default" {print $5; exit}')
 
@@ -43,10 +43,9 @@ if ! sudo ip l show brprov >/dev/null 2>&1; then
   sudo ip l set brprov up
   sudo ip a add $seed_hv_ip/24 dev brprov
 fi
-if ! sudo ip l show braio >/dev/null 2>&1; then
+if ! sudo ip l show brcloud >/dev/null 2>&1; then
   sudo ip l add brcloud type bridge
   sudo ip l set brcloud up
-  sudo ip a add $seed_hv_ip/24 dev brcloud
 fi
 for i in mgmt prov cloud; do
     if ! sudo ip l show dummy-$i >/dev/null 2>&1; then
@@ -66,21 +65,21 @@ fi
 
 # Configure port forwarding from the hypervisor to the Horizon GUI on the
 # controller.
-sudo iptables -A FORWARD -i $iface -o braio -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-sudo iptables -A FORWARD -i braio -o $iface -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+sudo iptables -A FORWARD -i $iface -o brprov -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+sudo iptables -A FORWARD -i brprov -o $iface -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 for port in $forwarded_ports; do
   # Allow new connections.
-  sudo iptables -A FORWARD -i $iface -o braio -p tcp --syn --dport $port -m conntrack --ctstate NEW -j ACCEPT
+  sudo iptables -A FORWARD -i $iface -o brcloud -p tcp --syn --dport $port -m conntrack --ctstate NEW -j ACCEPT
   # Destination NAT.
   sudo iptables -t nat -A PREROUTING -i $iface -p tcp --dport $port -j DNAT --to-destination $controller_vip
   # Source NAT.
-  sudo iptables -t nat -A POSTROUTING -o braio -p tcp --dport $port -d $controller_vip -j SNAT --to-source $seed_hv_private_ip
+  sudo iptables -t nat -A POSTROUTING -o brcloud -p tcp --dport $port -d $controller_vip -j SNAT --to-source $seed_hv_private_ip
 done
 
-# # Configure an IP on the 'public' network to allow access to/from the cloud.
-# if ! sudo ip a show dev braio | grep $public_ip/24 >/dev/null 2>&1; then
-#   sudo ip a add $public_ip/24 dev braio
-# fi
+#Configure an IP on the 'public' network to allow access to/from the cloud.
+if ! sudo ip a show dev brcloud | grep $public_ip/24 >/dev/null 2>&1; then
+  sudo ip a add $public_ip/24 dev brcloud
+fi
 
 echo
 echo "NOTE: The network configuration applied by this script is not"

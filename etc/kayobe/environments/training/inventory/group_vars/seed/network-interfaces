@@ -9,7 +9,7 @@ provision_oc_net_interface: "{{ 'ens3' if os_distribution == 'ubuntu' else 'eth1
 # Route via the seed-hypervisor to the outside world.
 # FIXME: Circular reference between seed & seed-hypervisor?
 #aio_gateway: "{{ 'aio' | net_ip('localhost') }}"
-provision_oc_net_gateway: 192.168.43.4
+provision_oc_net_gateway: 192.168.46.4
 
 ###############################################################################
 # Dummy variable to allow Ansible to accept this file.

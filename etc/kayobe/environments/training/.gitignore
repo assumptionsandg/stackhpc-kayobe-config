@@ -1,1 +1,4 @@
 .vscode
+cirros-*
+venvs
+kolla/passwords.yml

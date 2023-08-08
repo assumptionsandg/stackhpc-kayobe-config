@@ -17,12 +17,6 @@ KAYOBE_BRANCH=stackhpc/yoga
 KAYOBE_ENVIRONMENT=training
 
 
-if [ $KAYOBE_CONFIG_REPO = "https://github.com/example/stackhpc-kayobe-config" ]
-then
-    echo "To run this script, you must first edit it to use your own repository"
-    exit 0
-fi
-
 
 PELICAN_HOST="10.0.0.34 pelican pelican.service.compute.sms-lab.cloud"
 PULP_HOST="10.205.3.187 pulp-server pulp-server.internal.sms-cloud"
@@ -53,14 +47,6 @@ fi
 # Prevent sudo from performing DNS queries.
 echo 'Defaults	!fqdn' | sudo tee /etc/sudoers.d/no-fqdn
 
-# Clone repositories
-cd $BASE_PATH
-mkdir -p src
-pushd src
-[[ -d kayobe ]] || git clone https://github.com/stackhpc/kayobe.git -b $KAYOBE_BRANCH
-[[ -d kayobe-config ]] || git clone $KAYOBE_CONFIG_REPO kayobe-config -b $KAYOBE_CONFIG_BRANCH
-[[ -d kayobe/tenks ]] || (cd kayobe && git clone https://opendev.org/openstack/tenks.git)
-popd
 
 # Create Kayobe virtualenv
 mkdir -p venvs
