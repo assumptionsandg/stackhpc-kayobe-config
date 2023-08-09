@@ -11,24 +11,23 @@ bond_hs_interface: "bond0"
 bond_hs_mtu: 9000
 bond_hs_bond_mode: "active-backup"
 bond_hs_bond_slaves:
-  - "eth1"
   - "eth2"
 
 mgmt_oc_net_interface: "{{ 'ens3' if os_distribution == 'ubuntu' else 'eth1' }}"
 
-provision_wl_net_interface: "br{{ 'ens4' if os_distribution == 'ubuntu' else 'eth2' }}"
+provision_wl_net_interface: "brbond0"
 provision_wl_net_bridge_ports:
-  - "{{ 'ens4' if os_distribution == 'ubuntu' else 'eth2' }}"
+  - "bond0"
 
-internal_net_interface: "{{ 'ens4' if os_distribution == 'ubuntu' else 'eth2' }}.{{ internal_net_vlan }}"
+internal_net_interface: "bond0.{{ internal_net_vlan }}"
 
-external_net_interface: "br{{ 'ens4' if os_distribution == 'ubuntu' else 'eth2' }}.{{ external_net_vlan }}"
+external_net_interface: "brbond0.{{ external_net_vlan }}"
 
-public_net_interface: "{{ 'ens4' if os_distribution == 'ubuntu' else 'eth2' }}.{{ public_net_vlan }}"
+public_net_interface: "bond0.{{ public_net_vlan }}"
 
-str_net_interface: "{{ 'ens4' if os_distribution == 'ubuntu' else 'eth2' }}.{{ str_net_vlan }}"
+str_net_interface: "bond0.{{ str_net_vlan }}"
 
-tunnel_net_interface: "{{ 'ens4' if os_distribution == 'ubuntu' else 'eth2' }}.{{ tunnel_net_vlan }}"
+tunnel_net_interface: "bond0.{{ tunnel_net_vlan }}"
 
 
 ###############################################################################

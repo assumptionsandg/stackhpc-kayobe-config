@@ -24,7 +24,7 @@ seed_hv_private_ip=$(ip a show dev $iface | awk '$1 == "inet" { gsub(/\/[0-9]*/,
 forwarded_ports="80 6080 3000 9091 5601 9093"
 
 # IP of the seed hypervisor on the OpenStack 'public' network created by init-runonce.sh.
-public_ip="10.0.2.1"
+# public_ip="10.0.2.1"
 
 # Install iptables.
 if $(which dnf >/dev/null 2>&1); then
@@ -77,9 +77,9 @@ for port in $forwarded_ports; do
 done
 
 #Configure an IP on the 'public' network to allow access to/from the cloud.
-if ! sudo ip a show dev brcloud | grep $public_ip/24 >/dev/null 2>&1; then
-  sudo ip a add $public_ip/24 dev brcloud
-fi
+# if ! sudo ip a show dev brcloud | grep $public_ip/24 >/dev/null 2>&1; then
+#   sudo ip a add $public_ip/24 dev brcloud
+# fi
 
 echo
 echo "NOTE: The network configuration applied by this script is not"
