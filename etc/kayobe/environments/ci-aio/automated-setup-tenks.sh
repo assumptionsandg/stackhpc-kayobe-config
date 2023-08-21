@@ -41,7 +41,7 @@ cat << EOF >> $BASE_PATH/src/kayobe-config/etc/kayobe/aio.yml
 kolla_enable_ironic: true
 EOF
 sed -i "s/#os_release:/os_release: "9"/g" $BASE_PATH/src/kayobe-config/etc/kayobe/environments/ci-aio/globals.yml
-sed -i "s/nova_tag: yoga-20230718T112646/nova_tag: yoga-20230310T170929/g" $BASE_PATH/src/kayobe-config/etc/kayobe/environments/ci-aio/globals.yml
+sed -i "s/nova_tag: yoga-20230718T112646/nova_tag: yoga-20230310T170929/g" $BASE_PATH/src/kayobe-config/etc/kayobe/kolla/globals.yml
 sed -i "s/memory_mb: 1024/memory_mb: 4096/g" $BASE_PATH/src/kayobe/dev/tenks-deploy-config-compute.yml
 sed -i "s/capacity: 4GiB/capacity: 10GiB/g" $BASE_PATH/src/kayobe/dev/tenks-deploy-config-compute.yml
 
