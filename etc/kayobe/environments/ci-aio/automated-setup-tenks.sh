@@ -29,7 +29,7 @@ fi
 cd $BASE_PATH
 mkdir -p src
 pushd src
-[[ -d kayobe ]] || git clone https://github.com/stackhpc/kayobe.git -b $KAYOBE_BRANCH
+[[ -d kayobe ]] || git clone https://github.com/assumptionsandg/kayobe.git -b $KAYOBE_BRANCH
 [[ -d kayobe-config ]] || git clone https://github.com/stackhpc/stackhpc-kayobe-config kayobe-config -b $KAYOBE_CONFIG_BRANCH
 [[ -d kayobe/tenks ]] || (cd kayobe && git clone https://opendev.org/openstack/tenks.git)
 popd
@@ -38,12 +38,12 @@ cat << EOF >> $BASE_PATH/src/kayobe-config/etc/kayobe/environments/ci-aio/stackh
 stackhpc_pulp_repo_rocky_9_minor_version: 1
 EOF
 cat << EOF >> $BASE_PATH/src/kayobe-config/etc/kayobe/aio.yml
-kolla_enable_ironic=true
+kolla_enable_ironic: true
 EOF
-sed "s/#os_release:/os_release: "9"/g" $BASE_PATH/src/kayobe-config/etc/kayobe/environments/ci-aio/globals.yml
-sed "s/nova_tag: yoga-20230718T112646/nova_tag: yoga-20230310T170929/g" $BASE_PATH/src/kayobe-config/etc/kayobe/environments/ci-aio/globals.yml
-sed "s/memory_mb: 1024/memory_mb: 4096/g" $BASE_PATH/src/kayobe/dev/tenks-deploy-config-compute.yml
-sed "s/capacity: 4GiB/capacity: 10GiB/g" $BASE_PATH/src/kayobe/dev/tenks-deploy-config-compute.yml
+sed -i "s/#os_release:/os_release: "9"/g" $BASE_PATH/src/kayobe-config/etc/kayobe/environments/ci-aio/globals.yml
+sed -i "s/nova_tag: yoga-20230718T112646/nova_tag: yoga-20230310T170929/g" $BASE_PATH/src/kayobe-config/etc/kayobe/environments/ci-aio/globals.yml
+sed -i "s/memory_mb: 1024/memory_mb: 4096/g" $BASE_PATH/src/kayobe/dev/tenks-deploy-config-compute.yml
+sed -i "s/capacity: 4GiB/capacity: 10GiB/g" $BASE_PATH/src/kayobe/dev/tenks-deploy-config-compute.yml
 
 mkdir -p venvs
 pushd venvs
