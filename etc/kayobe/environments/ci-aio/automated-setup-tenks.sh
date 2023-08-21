@@ -11,8 +11,8 @@ sudo lvextend -L 10G /dev/mapper/rootvg-lv_tmp -r
 sudo lvextend -L 10G /dev/mapper/rootvg-lv_home -r
 
 BASE_PATH=~
-KAYOBE_BRANCH=stackhpc/yoga
-KAYOBE_CONFIG_BRANCH=stackhpc/yoga
+KAYOBE_BRANCH=ironic-param-config
+KAYOBE_CONFIG_BRANCH=rocky9-aio-tenks
 
 if [[ ! -f $BASE_PATH/vault-pw ]]; then
     echo "Vault password file not found at $BASE_PATH/vault-pw"
@@ -29,8 +29,8 @@ fi
 cd $BASE_PATH
 mkdir -p src
 pushd src
-[[ -d kayobe ]] || git clone https://github.com/assumptionsandg/kayobe.git -b $KAYOBE_BRANCH
-[[ -d kayobe-config ]] || git clone https://github.com/stackhpc/stackhpc-kayobe-config kayobe-config -b $KAYOBE_CONFIG_BRANCH
+[[ -d kayobe ]] || git clone https://github.com/assumptionsandg/kayobe.git kayobe -b $KAYOBE_BRANCH
+[[ -d kayobe-config ]] || git clone https://github.com/assumptionsandg/stackhpc-kayobe-config kayobe-config -b $KAYOBE_CONFIG_BRANCH
 [[ -d kayobe/tenks ]] || (cd kayobe && git clone https://opendev.org/openstack/tenks.git)
 popd
 
