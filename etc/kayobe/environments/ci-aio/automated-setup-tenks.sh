@@ -11,7 +11,7 @@ sudo lvextend -L 10G /dev/mapper/rootvg-lv_tmp -r
 sudo lvextend -L 10G /dev/mapper/rootvg-lv_home -r
 
 BASE_PATH=~
-KAYOBE_BRANCH=ironic-param-config
+KAYOBE_BRANCH=ironic-param
 KAYOBE_CONFIG_BRANCH=rocky9-aio-tenks
 
 if [[ ! -f $BASE_PATH/vault-pw ]]; then
@@ -40,7 +40,7 @@ EOF
 cat << EOF >> $BASE_PATH/src/kayobe-config/etc/kayobe/aio.yml
 kolla_enable_ironic: true
 EOF
-sed -i "s/#os_release:/os_release: "9"/g" $BASE_PATH/src/kayobe-config/etc/kayobe/environments/ci-aio/globals.yml
+sed -i "s/#os_release:/os_release: \"9\"/g" $BASE_PATH/src/kayobe-config/etc/kayobe/environments/ci-aio/globals.yml
 sed -i "s/nova_tag: yoga-20230718T112646/nova_tag: yoga-20230310T170929/g" $BASE_PATH/src/kayobe-config/etc/kayobe/kolla/globals.yml
 sed -i "s/memory_mb: 1024/memory_mb: 4096/g" $BASE_PATH/src/kayobe/dev/tenks-deploy-config-compute.yml
 sed -i "s/capacity: 4GiB/capacity: 10GiB/g" $BASE_PATH/src/kayobe/dev/tenks-deploy-config-compute.yml
@@ -82,7 +82,7 @@ kayobe overcloud host configure
 
 kayobe overcloud service deploy
 
-source $BASE_PATH/src/kayobe-config/kolla/public-openrc.sh
+source $BASE_PATH/src/kayobe-config/etc/kolla/public-openrc.sh
 kayobe overcloud post configure
 
 pushd $BASE_PATH/src/kayobe
