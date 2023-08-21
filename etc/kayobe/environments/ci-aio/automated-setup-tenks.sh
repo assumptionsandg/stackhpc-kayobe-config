@@ -20,7 +20,7 @@ if [[ ! -f $BASE_PATH/vault-pw ]]; then
 fi
 
 if type dnf; then
-    sudo dnf -y install git python3-virtualenv
+    sudo dnf -y install git
 else
     sudo apt update
     sudo apt -y install gcc git libffi-dev python3-dev python-is-python3 python3-virtualenv
@@ -48,7 +48,7 @@ sed "s/capacity: 4GiB/capacity: 10GiB/g" $BASE_PATH/src/kayobe/dev/tenks-deploy-
 mkdir -p venvs
 pushd venvs
 if [[ ! -d kayobe ]]; then
-    virtualenv kayobe
+    python3 -m venv kayobe
 fi
 # NOTE: Virtualenv's activate and deactivate scripts reference an
 # unbound variable.
