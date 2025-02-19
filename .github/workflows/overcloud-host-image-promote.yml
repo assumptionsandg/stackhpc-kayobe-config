@@ -23,6 +23,7 @@ jobs:
           - key: kayobe
             path: src/kayobe-config/requirements.txt
             repository: stackhpc/kayobe
+    permissions: write-all
     name: ${{ matrix.key }}
     steps:
       - name: Checkout
