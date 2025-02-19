@@ -50,10 +50,11 @@ jobs:
       - name: Update dependency key (kolla)
         uses: azimuth-cloud/github-actions/config-update@master
         with:
-          path: /home/runner/work/stackhpc-kayobe-config/stackhpc-kayobe-config/src/kayobe-config/etc/kayobe/stackhpc.yml
+          path: etc/kayobe/stackhpc.yml
           updates: |
             ${{ matrix.version_jsonpath }}=${{ steps.latest_tag.outputs.latest_tag }}
         if: contains(matrix.key, 'kolla')
+        working-directory: ${{ github.workspace }}/src/kayobe-config
 
       - name: Update dependency key (kayobe)
         run: |
