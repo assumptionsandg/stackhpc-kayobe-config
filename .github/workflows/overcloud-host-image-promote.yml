@@ -42,7 +42,7 @@ jobs:
         id: latest_tag
         run: |
           TAG=$(ls -la /home/runner/work/stackhpc-kayobe-config/stackhpc-kayobe-config/src/kayobe-config)
-          echo latest_tag=${TAG} >> $GITHUB_OUTPUT
+          echo ::debug::$(ls -la /home/runner/work/stackhpc-kayobe-config/stackhpc-kayobe-config/src/kayobe-config)
         working-directory: ${{ github.workspace }}/src/${{ matrix.key }}
 
       - name: Update dependency key (kolla)
