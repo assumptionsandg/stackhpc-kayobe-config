@@ -11,26 +11,26 @@ jobs:
       matrix:
         include:
           - key: kolla
-            repo_path: ${{ github.workspace }}/src/kolla
-            path: ${{ github.workspace }}/src/kayobe-config/etc/kayobe/stackhpc.yml
+            repo_path: src/kolla
+            path: src/kayobe-config/etc/kayobe/stackhpc.yml
             repository: stackhpc/kolla
             version_jsonpath: stackhpc_kolla_source_version
 
           - key: kolla-ansible
-            repo_path: ${{ github.workspace }}/src/kolla-ansible
-            path: ${{ github.workspace }}/src/kayobe-config/etc/kayobe/stackhpc.yml
+            repo_path: src/kolla-ansible
+            path: src/kayobe-config/etc/kayobe/stackhpc.yml
             repository: stackhpc/kolla-ansible
             version_jsonpath: stackhpc_kolla_ansible_source_version
 
           - key: kayobe
-            repo_path: ${{ github.workspace }}/src/kayobe
-            path: ${{ github.workspace }}/src/kayobe-config/requirements.txt
+            repo_path: src/kayobe
+            path: src/kayobe-config/requirements.txt
             repository: stackhpc/kayobe
     name: ${{ matrix.key }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-          path: ${{ github.workspace }}/src/kayobe-config
+          path: src/kayobe-config
 
       - name: Checkout the dependency repo
         uses: actions/checkout@v4
