@@ -11,20 +11,17 @@ jobs:
       matrix:
         include:
           - key: kolla
-            repo_path: ${{ github.workspace }}/src/kolla
-            path: ${{ github.workspace }}/src/kayobe-config/etc/kayobe/stackhpc.yml
+            path: src/kayobe-config/etc/kayobe/stackhpc.yml
             repository: stackhpc/kolla
             version_jsonpath: stackhpc_kolla_source_version
 
           - key: kolla-ansible
-            repo_path: ${{ github.workspace }}/src/kolla-ansible
-            path: ${{ github.workspace }}/src/kayobe-config/etc/kayobe/stackhpc.yml
+            path: src/kayobe-config/etc/kayobe/stackhpc.yml
             repository: stackhpc/kolla-ansible
             version_jsonpath: stackhpc_kolla_ansible_source_version
 
           - key: kayobe
-            repo_path: ${{ github.workspace }}/src/kayobe
-            path: ${{ github.workspace }}/src/kayobe-config/requirements.txt
+            path: src/kayobe-config/requirements.txt
             repository: stackhpc/kayobe
     name: ${{ matrix.key }}
     steps:
@@ -45,12 +42,12 @@ jobs:
         run: |
           TAG=$(git describe --tags --abbrev=0 --match stackhpc/\*)
           echo latest_tag=${TAG} >> $GITHUB_OUTPUT
-        working-directory: ${{ matrix.repo_path }}
+        working-directory: ${{ github.workspace }}/src/${{ matrix.key }}
 
       - name: Update dependency key (kolla)
         uses: azimuth-cloud/github-actions/config-update@master
         with:
-          path: ${{ matrix.path }}
+          path: ${{ github.workspace }}/${{ matrix.path }}
           updates: |
             ${{ matrix.version_jsonpath }}=${{ steps.latest_tag.outputs.latest_tag }}
         if: contains(matrix.key, 'kolla')
@@ -61,4 +58,4 @@ jobs:
         if: contains(matrix.key, 'kayobe')
         env:
           TAG: ${{ steps.latest_tag.outputs.latest_tag }}
-          REQUIREMENTS: ${{ matrix.path }}
+          REQUIREMENTS: ${{ github.workspace }}/src/kayobe-config
