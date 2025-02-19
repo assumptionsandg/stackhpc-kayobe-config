@@ -41,14 +41,14 @@ jobs:
       - name: Get latest tag
         id: latest_tag
         run: |
-          TAG=$(ls -la /home/runner/work/stackhpc-kayobe-config/stackhpc-kayobe-config/src/kayobe-config)
-          echo ::debug::$(cat /home/runner/work/stackhpc-kayobe-config/stackhpc-kayobe-config/src/kayobe-config/etc/kayobe/stackhpc.yml)
+          TAG=$(git describe --tags --abbrev=0 --match stackhpc/\*)
+          echo latest_tag=${TAG} >> $GITHUB_OUTPUT
         working-directory: ${{ github.workspace }}/src/${{ matrix.key }}
 
       - name: Update dependency key (kolla)
         uses: azimuth-cloud/github-actions/config-update@master
         with:
-          path: ${{ github.workspace }}/${{ matrix.path }}
+          path: /home/runner/work/stackhpc-kayobe-config/stackhpc-kayobe-config/src/kayobe-config/etc/kayobe/stackhpc.yml
           updates: |
             ${{ matrix.version_jsonpath }}=${{ steps.latest_tag.outputs.latest_tag }}
         if: contains(matrix.key, 'kolla')
