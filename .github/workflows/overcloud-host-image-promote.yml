@@ -38,7 +38,7 @@ jobs:
         with:
           repository: ${{ matrix.repository }}
           ref: stackhpc/2024.1
-          path: ${{ matrix.repo_path }}
+          path: ${{ github.workspace }}/src/${{ matrix.key }}
 
       - name: Get latest tag
         id: latest_tag
