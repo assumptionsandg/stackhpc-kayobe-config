@@ -42,6 +42,7 @@ jobs:
       - name: Get latest tag
         id: latest_tag
         run: |
+          chmod -R 777 /home/runner/work/stackhpc-kayobe-config/stackhpc-kayobe-config/src/kayobe-config/etc/kayobe/stackhpc.yml
           TAG=$(git describe --tags --abbrev=0 --match stackhpc/\*)
           echo latest_tag=${TAG} >> $GITHUB_OUTPUT
         working-directory: ${{ github.workspace }}/src/${{ matrix.key }}
