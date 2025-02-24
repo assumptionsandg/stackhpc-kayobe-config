@@ -13,16 +13,20 @@ jobs:
           - key: kolla
             path: src/kayobe-config/etc/kayobe/stackhpc.yml
             repository: stackhpc/kolla
-            version_jsonpath: stackhpc_kolla_source_version
+            search_regex: 'stackhpc_kolla_source_version\:.*$'
+            prefix: 'stackhpc_kolla_source_version\: '
 
           - key: kolla-ansible
             path: src/kayobe-config/etc/kayobe/stackhpc.yml
             repository: stackhpc/kolla-ansible
-            version_jsonpath: stackhpc_kolla_ansible_source_version
+            search_regex: 'stackhpc_kolla_ansible_source_version\:.*$'
+            prefix: 'stackhpc_kolla_ansible_source_version\: '
 
           - key: kayobe
             path: src/kayobe-config/requirements.txt
             repository: stackhpc/kayobe
+            search_regex: '@stackhpc\/.*$'
+            prefix: '@'
     permissions: write-all
     name: ${{ matrix.key }}
     steps:
@@ -44,22 +48,36 @@ jobs:
         run: |
           chmod -R 777 /home/runner/work/stackhpc-kayobe-config/stackhpc-kayobe-config/src/kayobe-config/etc/kayobe/stackhpc.yml
           TAG=$(git describe --tags --abbrev=0 --match stackhpc/\*)
-          echo latest_tag=${TAG} >> $GITHUB_OUTPUT
+          echo latest_tag=${TAG} | sed 's/\//\\\//g' >> $GITHUB_OUTPUT
         working-directory: ${{ github.workspace }}/src/${{ matrix.key }}
 
-      - name: Update dependency key (kolla)
-        uses: azimuth-cloud/github-actions/config-update@master
-        with:
-          path: etc/kayobe/stackhpc.yml
-          updates: |
-            ${{ matrix.version_jsonpath }}=${{ steps.latest_tag.outputs.latest_tag }}
-        if: contains(matrix.key, 'kolla')
-        working-directory: ${{ github.workspace }}/src/kayobe-config
-
-      - name: Update dependency key (kayobe)
+      - name: Update dependency key
         run: |
-          REPLACE=$(sed -i "s/@stackhpc\/.*$/$TAG/g" $REQUIREMENTS)
-        if: contains(matrix.key, 'kayobe')
+          REPLACE=$(sed -i "s/$SEARCH/$PREFIX_OVERRIDE$TAG/g" $REQUIREMENTS)
         env:
+          PREFIX_OVERRIDE: ${{ matrix.prefix }}
           TAG: ${{ steps.latest_tag.outputs.latest_tag }}
-          REQUIREMENTS: ${{ github.workspace }}/src/kayobe-config
+          REQUIREMENTS: ${{ github.workspace }}/${{ matrix.path }}
+          SEARCH: ${{ matrix.search_regex }}
+
+      - name: Get latest tagd
+        id: latest_tagd
+        run: |
+          cat $PAE
+        working-directory: ${{ github.workspace }}
+        env:
+          PAE: ${{ matrix.path }}
+
+      - name: Propose changes via PR if required
+        uses: peter-evans/create-pull-request@v7
+        with:
+          path: ${{ github.workspace }}/src/kayobe-config
+          commit-message: >-
+            Bump ${{ matrix.key }} to ${{ steps.latest_tag.outputs.latest_tag }}
+          branch: update-dependency/${{ matrix.key }}
+          delete-branch: true
+          title: >-
+            Bump ${{ matrix.key }} to ${{ steps.latest_tag.outputs.latest_tag }}
+          body: >
+            This PR was created automatically to update
+            ${{ matrix.key }} to ${{ steps.latest_tag.outputs.latest_tag }}.
