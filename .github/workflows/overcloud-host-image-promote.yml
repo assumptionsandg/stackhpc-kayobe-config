@@ -59,8 +59,8 @@ jobs:
 
       - name: Update dependency key
         run: |
-          PREFIX_OVERRIDE=$(echo $PREFIX | sed 's/\//\\\//g')
-          sed -i "s/$SEARCH/$PREFIX_OVERRIDE$TAG/g" $REQUIREMENTS
+          TAG_OVERRIDE=$(echo $TAG | sed 's/\//\\\//g')
+          sed -i "s/$SEARCH/$PREFIX$TAG_OVERRIDE/g" $REQUIREMENTS
         env:
           PREFIX: ${{ matrix.prefix }}
           TAG: ${{ steps.latest_tag.outputs.latest_tag }}
