@@ -3,6 +3,9 @@ name: Update dependencies
 on:
   # Allow manual executions
   workflow_dispatch:
+  # Run nightly
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   propose_github_release_updates:
