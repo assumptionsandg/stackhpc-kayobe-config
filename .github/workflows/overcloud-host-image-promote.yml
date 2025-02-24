@@ -46,7 +46,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: ${{ matrix.repository }}
-          ref: stackhpc/2023.1 #${{ steps.openstack_release.outputs.openstack_release }}
+          ref: ${{ steps.openstack_release.outputs.openstack_release }}
           fetch-tags: true
           path: ${{ github.workspace }}/src/${{ matrix.key }}
 
@@ -66,14 +66,6 @@ jobs:
           TAG: ${{ steps.latest_tag.outputs.latest_tag }}
           REQUIREMENTS: ${{ github.workspace }}/${{ matrix.path }}
           SEARCH: ${{ matrix.search_regex }}
-
-      - name: Get latest tagd
-        id: latest_tagd
-        run: |
-          cat $PAE
-        working-directory: ${{ github.workspace }}
-        env:
-          PAE: ${{ matrix.path }}
 
       - name: Propose changes via PR if required
         uses: peter-evans/create-pull-request@v7
