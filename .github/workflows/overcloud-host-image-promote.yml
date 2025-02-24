@@ -35,27 +35,34 @@ jobs:
         with:
           path: ${{ github.workspace }}/src/kayobe-config
 
+      - name: Determine OpenStack release
+        id: openstack_release
+        run: |
+          BRANCH=$(awk -F'=' '/defaultbranch/ {print $2}' .gitreview)
+          echo "openstack_release=${BRANCH}" | sed -E "s,(stable|unmaintained)/,," >> $GITHUB_OUTPUT
+        working-directory: ${{ github.workspace }}/src/kayobe-config
+
       - name: Checkout the dependency repo
         uses: actions/checkout@v4
         with:
           repository: ${{ matrix.repository }}
-          ref: stackhpc/2024.1
+          ref: ${{ steps.openstack_release.outputs.openstack_release }}
           fetch-tags: true
           path: ${{ github.workspace }}/src/${{ matrix.key }}
 
       - name: Get latest tag
         id: latest_tag
         run: |
-          chmod -R 777 /home/runner/work/stackhpc-kayobe-config/stackhpc-kayobe-config/src/kayobe-config/etc/kayobe/stackhpc.yml
           TAG=$(git describe --tags --abbrev=0 --match stackhpc/\*)
-          echo latest_tag=${TAG} | sed 's/\//\\\//g' >> $GITHUB_OUTPUT
+          echo latest_tag=${TAG} >> $GITHUB_OUTPUT
         working-directory: ${{ github.workspace }}/src/${{ matrix.key }}
 
       - name: Update dependency key
         run: |
-          REPLACE=$(sed -i "s/$SEARCH/$PREFIX_OVERRIDE$TAG/g" $REQUIREMENTS)
+          PREFIX_OVERRIDE=$(echo $PREFIX | sed 's/\//\\\//g')
+          sed -i "s/$SEARCH/$PREFIX_OVERRIDE$TAG/g" $REQUIREMENTS
         env:
-          PREFIX_OVERRIDE: ${{ matrix.prefix }}
+          PREFIX: ${{ matrix.prefix }}
           TAG: ${{ steps.latest_tag.outputs.latest_tag }}
           REQUIREMENTS: ${{ github.workspace }}/${{ matrix.path }}
           SEARCH: ${{ matrix.search_regex }}
