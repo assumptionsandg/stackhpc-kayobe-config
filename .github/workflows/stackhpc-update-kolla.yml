@@ -3,9 +3,6 @@ name: Update Kolla versions
 on:
   # Allow manual executions
   workflow_dispatch:
-  # Run nightly
-  schedule:
-    - cron: '0 0 * * *'
 
 jobs:
   update_from_branch:
