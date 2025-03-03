@@ -14,6 +14,9 @@ jobs:
           - version: stackhpc/2024.1
     name: ${{ matrix.version }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Update dependencies
         uses: ./.github/workflows/update-dependencies.yml
         with:
